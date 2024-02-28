@@ -4,13 +4,13 @@ import sqlite3
 app = Flask(__name__)
 
 def get_db_connection():
-    conn = sqlite3.connect('admin.db')
+    conn = sqlite3.connect('personal_account.db')
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
     conn = get_db_connection()
-    conn.execute('CREATE TABLE IF NOT EXISTS per_acc (id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT NOT NULL, password TEXT NOT NULL)')
+    conn.execute('CREATE TABLE IF NOT EXISTS personal_account (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, surname TEXT NOT NULL, patronymic TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL)')
     conn.close()
 
 def close_db_connection(conn):
@@ -35,12 +35,15 @@ def index():
 @app.route('/admin', methods=['POST','GET'])
 def admin():
     if request.method == 'POST':
-        login = request.form['login']
+        name = request.form['name']
+        surname = request.form['surname']
+        patronymic = request.form['patronymic']
+        email = request.form['email']
         password = request.form['password']
 
         try:
             conn = get_db_connection()
-            conn.execute('INSERT INTO per_acc (login, password) VALUES (?, ?)', (login, password))
+            conn.execute('INSERT INTO personal_account (name, surname, patronymic, email, password) VALUES (?, ?, ?, ?, ?)', (name, surname, patronymic, email, password))
             conn.commit()
             conn.close()
             return redirect('/per_acc')
