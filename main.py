@@ -1,100 +1,126 @@
-from flask import Flask, redirect, render_template, request
-import sqlite3
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
+
+from flask import Flask, redirect, render_template, request,  jsonify
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import set_access_cookies
+from flask_jwt_extended import unset_jwt_cookies
+
+import base64
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///web-site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-#функция создания базы данных
-def get_db_connection():
-    conn = sqlite3.connect('personal_account.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    surname = db.Column(db.String(100), nullable=False)
+    patronymic = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
-#функция инициализации базы данных
-def init_db():
-    conn = get_db_connection()
-    conn.execute('CREATE TABLE IF NOT EXISTS personal_account (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, surname TEXT NOT NULL, patronymic TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL)')
-    conn.close()
 
-#функция закрытия базы данных
-def close_db_connection(conn):
-    conn.close()
+    def __repr__(self):
+        return '<Users %r>' % self.id
 
-#функция очищения базы данных
-def delete():
-    conn = get_db_connection()
-    conn.execute('DELETE from personal_account')
-    conn.commit()
-    conn.close()
 
-#создание базы данных
-@app.before_request
-def before_first_request():
-    init_db()
+app.config["JWT_COOKIE_SECURE"] = False
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+app.config["JWT_SECRET_KEY"] = "djfyt75"  # Change this in your code!
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+
+jwt = JWTManager(app)
+
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            set_access_cookies(response, access_token)
+        return response
+    except (RuntimeError, KeyError):
+        return response
+
+# @app.route("/login", methods=["POST"])
+# def login():
+#     response = jsonify({"msg": "login successful"})
+#     access_token = create_access_token(identity="example_user")
+#     set_access_cookies(response, access_token)
+#     return response
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
+
+@app.route("/protected")
+@jwt_required()
+def protected():
+    return jsonify(foo="bar")
 
 #роут на главную страницу
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    # try:
+    #     db.session.query(Users).delete()
+    #     db.session.commit()
+    # except:
+    #     db.session.rollback()
     if request.method == 'POST':
         return redirect('/registration')
     return render_template('index.html')
 
 #роут на страницу регистрации
 @app.route('/registration', methods=['POST','GET'])
-def admin():
+def registration():
     if request.method == 'POST':
         name = request.form['name']
         surname = request.form['surname']
         patronymic = request.form['patronymic']
         email = request.form['email']
         password = request.form['password']
+        password_rep = request.form['password_rep']
 
-        #вывожу данные почты из базы данных в лист питона
-        conn = get_db_connection()
-        email_list = []
-        for el in conn.execute('SELECT email FROM personal_account').fetchall():
-            email_list.append(tuple(el))
+        rep_email = db.session.query(Users.id).filter(Users.email == email)
+        if password == password_rep:
+            if db.session.query(rep_email.exists()).scalar() == False:
 
-        #проверяю есть ли такая почта в нашей базе данных
-        flag = True
-        for i in range(len(email_list)):
-            if email != email_list[i][0]:
-                flag = True
+                user = Users(name=name, surname=surname, patronymic=patronymic, email=email, password=password)
+
+                try:
+                    db.session.add(user)
+                    db.session.commit()
+                    return redirect('/login')
+                except:
+                    return 'При добавлении данных произошла ошибка!'
             else:
-                flag = False
-
-        #если флаг = правда, значит такой почты нет и человек может зарегистрироваться, если флаг = ложь,
-        #то появляется сообщение о том, что пользователь с такой почтой уже зарегистрирован
-        if flag == True:
-            try:
-                conn.execute('INSERT INTO personal_account (name, surname, patronymic, email, password) VALUES (?, ?, ?, ?, ?)', (name, surname, patronymic, email, password))
-                conn.commit()
-                conn.close()
-                return redirect('/per_acc')
-            except:
-                return 'Из-за непредвиденных проблем произошла ошибка! Попробуйте еще раз!'
+                return 'Почта уже зарегистрирована'
         else:
-            return 'Пользователь с такой почтой уже зарегистрирован!'
+            return 'Вы написали разные пароли!'
 
     return render_template('registration.html')
-
-#роут на страницу "о нас"
-@app.route('/boute')
-def aboute():
-    return render_template('boute.html')
 
 #роут на страницу личного кабинета
 @app.route('/per_acc', methods=['GET'])
 def acc():
-    conn = get_db_connection()
-    personal_account = conn.execute('SELECT * from personal_account').fetchall()
-    conn.close()
-    return render_template('per_acc.html', personal_account=personal_account)
+    return render_template('per_acc.html')
 
 
-#роут на страницу выборки квартир
-@app.route('/celection')
-def cele():
-    return render_template('cele.html')
+
+
 
 #запуск сервера с возможностью дебага в режиме реального времени
 if __name__ == '__main__':
