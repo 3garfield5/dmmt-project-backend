@@ -5,9 +5,7 @@
 {% block content %}
     <h1>Личный кабинет</h1>
     <div>
-        <h1>{{ personal_account.name }}</h1>
-        <h1>{{ personal_account.surname }}</h1>
-        <h1>{{ personal_account.name }}</h1>
-        <h1>{{ personal_account.email }}</h1>
+        <h1>{{ user[0].name }}</h1>
+        <h1>{{ user[0].email }}</h1>
     </div>
 {% endblock %}

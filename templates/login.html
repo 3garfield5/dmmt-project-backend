@@ -1,15 +1,14 @@
 {% extends "base.html"%}
 
-{% block title %}Registration{% endblock %}
+{% block title %}Log in{% endblock %}
 
 {% block content %}
-    <h1>Registration</h1>
+    <h1>Log in</h1>
     <div>
         <form method="post">
-            <input type="text" name="name" placeholder="Введите имя"><br>
             <input type="email" name="email" id="email" placeholder="Введите почту"><br>
             <input type="password" name="password" id="password" placeholder="Введите пароль"><br>
-            <input type="submit" value="Зарегистрироваться"><br>
+            <input type="submit" value="Войти"><br>
         </form>
     </div>
 {% endblock %}
