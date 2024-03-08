@@ -63,13 +63,14 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+        # получаем данные из формы HTML
 
         rep_email = db.session.query(Users.id).filter(Users.email == email)
 
-        if db.session.query(rep_email.exists()).scalar() == True:
+        if db.session.query(rep_email.exists()).scalar() == True: # проверяем повтор почты в БД, если есть, то выполняется условие
 
-            user = Users.query.where(Users.email == email).first()
-            if check_password_hash(user.password, password) == True:
+            user = Users.query.where(Users.email == email).first() # получаем значение пароля, где введенная почта = почте в БД
+            if check_password_hash(user.password, password) == True: # так как мы хэшировали пароль, теперь проверяем введенный пароль, при помощи этой функции
 
                 return 'успешно'
 
