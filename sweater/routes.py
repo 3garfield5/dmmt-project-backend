@@ -1,5 +1,7 @@
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, flash, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, login_required, logout_user
+
 
 from sweater import db, app
 from sweater.models import Users
@@ -13,61 +15,75 @@ def index():
     # except:
     #     db.session.rollback()
     if request.method == 'POST':
-        return redirect('/registration')
+        return redirect('login')
     return render_template('index.html')
 
 #роут на страницу регистрации
 @app.route('/registration', methods=['POST','GET'])
 def registration():
+
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    # получаем данные из формы HTML
+
     if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        # получаем данные из формы HTML
-
-        rep_email = db.session.query(Users.id).filter(Users.email == email)
-        if db.session.query(rep_email.exists()).scalar() == False: #проверяем есть ли такая почта в БД
-
-            password = generate_password_hash(password) # хэшируем пароль для безопасности
-            user = Users(name=name, email=email, password=password)
-
-            try:
-                db.session.add(user) # добавляем данные из формы в БД
-                db.session.commit() # сохраняем данные в БД
-                return 'Успешно'
-            except:
-                return 'При добавлении данных произошла ошибка!'
+        if not (name or email or password):
+            flash('Please, fill all fields all!')
         else:
-            return 'Почта уже зарегистрирована'
+            rep_email = db.session.query(Users.id).filter(Users.email == email)
+            if db.session.query(rep_email.exists()).scalar() == False: #проверяем есть ли такая почта в БД
+
+                hash_pwr = generate_password_hash(password)
+                new_user = Users(name=name, email=email, password=hash_pwr)
+                db.session.add(new_user)
+                db.session.commit()
+
+                return redirect('login')
+            else:
+                return 'Ошибка!'
 
     return render_template('registration.html')
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        # получаем данные из формы HTML
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if email and password:
+        user = Users.query.filter_by(email=email).first()
 
         rep_email = db.session.query(Users.id).filter(Users.email == email)
-
         if db.session.query(rep_email.exists()).scalar() == True: # проверяем повтор почты в БД, если есть, то выполняется условие
 
-            user = Users.query.where(Users.email == email).first() # получаем значение пароля, где введенная почта = почте в БД
-            if check_password_hash(user.password, password) == True: # так как мы хэшировали пароль, теперь проверяем введенный пароль, при помощи этой функции
+            if user and check_password_hash(user.password, password):
+                login_user(user)
 
-                return 'успешно'
-
+                return redirect('per_acc')
             else:
-                return 'Пароль не верный'
-
+                flash('Login or password is not correct')
         else:
-            return 'Такой почты не существует!'
+            flash('You are not in system ')
+    else:
+        flash('Please fill login or password fields')
+
     return render_template('login.html')
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 #роут на страницу личного кабинета
 @app.route('/per_acc', methods=['GET'])
+@login_required
 def acc():
     user = Users.query.all()
     return render_template('per_acc.html', user=user)
 
+@app.after_request
+def redirect_to_signin(response):
+    if response.status_code == 401:
+        return redirect(url_for('login') + '?next=' + request.url)
+    return response
