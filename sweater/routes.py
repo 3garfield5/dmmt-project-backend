@@ -14,8 +14,6 @@ def index():
     #    db.session.commit()
     # except:
     #     db.session.rollback()
-    if request.method == 'POST':
-        return redirect('login')
     return render_template('index.html')
 
 #роут на страницу регистрации
@@ -29,19 +27,21 @@ def registration():
 
     if request.method == 'POST':
         if not (name or email or password):
-            flash('Please, fill all fields all!')
+            flash('Please, fill all fields!') # проверяем заполнены ли все поля
         else:
             rep_email = db.session.query(Users.id).filter(Users.email == email)
             if db.session.query(rep_email.exists()).scalar() == False: #проверяем есть ли такая почта в БД
 
-                hash_pwr = generate_password_hash(password)
+                hash_pwr = generate_password_hash(password) # хэшируем пароль
                 new_user = Users(name=name, email=email, password=hash_pwr)
                 db.session.add(new_user)
-                db.session.commit()
+                db.session.commit() # добавляем данные в бд
 
                 return redirect('login')
             else:
-                return 'Ошибка!'
+                flash('An account with such an email has already been registered')
+    else:
+        flash('Please fill name, email and password fields')
 
     return render_template('registration.html')
 
@@ -56,8 +56,8 @@ def login():
         rep_email = db.session.query(Users.id).filter(Users.email == email)
         if db.session.query(rep_email.exists()).scalar() == True: # проверяем повтор почты в БД, если есть, то выполняется условие
 
-            if user and check_password_hash(user.password, password):
-                login_user(user)
+            if user and check_password_hash(user.password, password): # проверяем правильность пароля
+                login_user(user) # выполняем вход в аккаунт
 
                 return redirect('per_acc')
             else:
@@ -72,15 +72,14 @@ def login():
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
-    logout_user()
+    logout_user() # функция выхода человека из аккаунта
     return redirect(url_for('index'))
 
 #роут на страницу личного кабинета
 @app.route('/per_acc', methods=['GET'])
 @login_required
 def acc():
-    user = Users.query.all()
-    return render_template('per_acc.html', user=user)
+    return render_template('per_acc.html')
 
 @app.after_request
 def redirect_to_signin(response):
