@@ -5,6 +5,16 @@
 {% block content %}
     <h1>Registration</h1>
     <div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class = flashes>
+                    {% for messages in messages %}
+                        <li>{{ messages }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
         <form method="post">
             <input type="text" name="name" placeholder="Введите имя"><br>
             <input type="email" name="email" id="email" placeholder="Введите почту"><br>

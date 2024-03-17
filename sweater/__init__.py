@@ -8,6 +8,6 @@ app.secret_key = 'secret key uauauauauaaaao'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///web-site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app) # база данных
-manager = LoginManager(app)
+manager = LoginManager(app) # менеджер для реализации входа в аккаунт
 
 from sweater import models, routes
