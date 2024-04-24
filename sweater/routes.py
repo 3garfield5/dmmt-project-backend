@@ -15,14 +15,12 @@ def index():
     #     db.session.rollback()
     name = request.form.get('name')
     tg = request.form.get('tg')
-    with app.app_context():
-        db.create_all()
 
     if request.method == 'POST':
         bot = BotReq(name=name, tg=tg)
         db.session.add(bot)
         db.session.commit()  # добавляем данные в бд
-        return redirect('')
+        return render_template('index.html')
     return render_template('index.html')
 
 #роут на страницу регистрации
