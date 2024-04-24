@@ -5,7 +5,6 @@ from flask_login import login_user, login_required, logout_user
 
 from sweater import db, app
 from sweater.models import Users
-
 #роут на главную страницу
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -43,7 +42,7 @@ def registration():
     else:
         flash('Please fill name, email and password fields')
 
-    return render_template('registration.html')
+    return render_template('regist.html')
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -67,7 +66,7 @@ def login():
     else:
         flash('Please fill login or password fields')
 
-    return render_template('login.html')
+    return render_template('login1.html')
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
@@ -80,6 +79,10 @@ def logout():
 @login_required
 def acc():
     return render_template('per_acc.html')
+
+@app.route('/collection')
+def collection():
+    return 'Collection'
 
 @app.after_request
 def redirect_to_signin(response):
