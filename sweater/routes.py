@@ -4,7 +4,7 @@ from flask_login import login_user, login_required, logout_user
 
 
 from sweater import db, app
-from sweater.models import Users
+from sweater.models import Users, BotReq
 #роут на главную страницу
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -13,6 +13,16 @@ def index():
     #    db.session.commit()
     # except:
     #     db.session.rollback()
+    name = request.form.get('name')
+    tg = request.form.get('tg')
+    with app.app_context():
+        db.create_all()
+
+    if request.method == 'POST':
+        bot = BotReq(name=name, tg=tg)
+        db.session.add(bot)
+        db.session.commit()  # добавляем данные в бд
+        return redirect('')
     return render_template('index.html')
 
 #роут на страницу регистрации
