@@ -1,3 +1,4 @@
+import pandas as pd
 from flask import redirect, render_template, request, flash, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user
@@ -7,6 +8,8 @@ import random
 from sweater.dw_project import metro_list_1, metro_list_2, metro_list_3, metro_list, df
 from sweater import db, app
 from sweater.models import Users, BotReq
+from ml_model import model
+
 #роут на главную страницу
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -113,11 +116,20 @@ def calculate():
     minutes_to_metro = request.form.get('minutes to metro')
     number_of_rooms = request.form.get('number of rooms')
     area = request.form.get('area')
+    liv_area = request.form.get('living area')
+    kit_area = request.form.get('kitchen area')
     floor = request.form.get('floor')
+    number_of_floors = request.form.get('number of floors')
     renovation = request.form.get('renovation')
+    x_calc = pd.Series({'Apartment type': ap_type, 'Metro station': metro_station,
+                        'Minutes to metro': minutes_to_metro, 'Region': region,
+                        'Number of rooms': number_of_rooms, 'Area': area,
+                        'Living area': liv_area, 'Kitchen area': kit_area,
+                        'Floor': floor, 'Number of floors': number_of_floors,
+                        'Renovation': renovation})
+    prediction = model.predict(x_calc)
 
-
-    return render_template('cost calculation.html')
+    return render_template('cost calculation.html', prediction=prediction)
 
 @app.after_request
 def redirect_to_signin(response):
