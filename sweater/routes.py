@@ -4,7 +4,7 @@ from flask_login import login_user, login_required, logout_user
 import random
 
 
-from sweater.dw_project import metro_list_1, metro_list_2, metro_list_3, metro_list
+from sweater.dw_project import metro_list_1, metro_list_2, metro_list_3, metro_list, df
 from sweater import db, app
 from sweater.models import Users, BotReq
 #роут на главную страницу
@@ -97,7 +97,27 @@ def acc():
 
 @app.route('/collection')
 def collection():
-    return 'Collection'
+    price_bot = request.form.get('price_bot')
+    price_top = request.form.get('price_top')
+    region = request.form.get('region')
+    submit = request.form.get('submit')
+    if submit == 'Отправить':
+        return render_template('collection.html', price_top=price_top, price_bot=price_bot, region=region)
+    return render_template('collection.html')
+
+@app.route('/cost_calculation')
+def calculate():
+    ap_type = request.form.get('ap_type')
+    region = request.form.get('region')
+    metro_station = request.form.get('metro station')
+    minutes_to_metro = request.form.get('minutes to metro')
+    number_of_rooms = request.form.get('number of rooms')
+    area = request.form.get('area')
+    floor = request.form.get('floor')
+    renovation = request.form.get('renovation')
+
+
+    return render_template('cost calculation.html')
 
 @app.after_request
 def redirect_to_signin(response):

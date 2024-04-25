@@ -10,8 +10,6 @@ len(set(map(lambda x: x.strip().lower(), df['Metro station'])))
 
 df['Metro station'] = list(map(lambda x: x.strip().lower(), df['Metro station']))
 
-df['Metro station'].nunique()
-
 metro = df['Metro station'].drop_duplicates()
 
 metro_list = []
