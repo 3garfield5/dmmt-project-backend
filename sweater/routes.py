@@ -8,7 +8,7 @@ import random
 from sweater.dw_project import metro_list_1, metro_list_2, metro_list_3, metro_list, df
 from sweater import db, app
 from sweater.models import Users, BotReq
-from ml_model import model
+# from ml_model import model
 
 #роут на главную страницу
 @app.route('/', methods=['POST', 'GET'])
@@ -98,14 +98,17 @@ def logout():
 def acc():
     return render_template('per_acc.html')
 
-@app.route('/collection')
+@app.route('/collection', methods=['POST', 'GET'])
 def collection():
     price_bot = request.form.get('price_bot')
     price_top = request.form.get('price_top')
     region = request.form.get('region')
-    submit = request.form.get('submit')
-    if submit == 'Отправить':
-        return render_template('collection.html', price_top=price_top, price_bot=price_bot, region=region)
+    if request.method == 'POST':
+
+        df_filter = df.loc[(df['Price'] > float(price_bot)) & (df['Price'] < float(price_top)) & (df['Region'] == region)]
+        df_filter_len = len(df_filter)
+
+        return render_template('collection.html', df_filter=df_filter, df_filter_len=df_filter_len)
     return render_template('collection.html')
 
 @app.route('/cost_calculation')
@@ -127,9 +130,9 @@ def calculate():
                         'Living area': liv_area, 'Kitchen area': kit_area,
                         'Floor': floor, 'Number of floors': number_of_floors,
                         'Renovation': renovation})
-    prediction = model.predict(x_calc)
+    # prediction = model.predict(x_calc)
 
-    return render_template('cost calculation.html', prediction=prediction)
+    return render_template('cost calculation.html')
 
 @app.after_request
 def redirect_to_signin(response):

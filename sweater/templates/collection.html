@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Collection</h1>
     <div>
-        <form method="get">
+        <form method="POST">
             <input type="number" name="price_bot" placeholder="Нижняя граница цены"><br>
             <input type="number" name="price_top" placeholder="Верхняя граница цены"><br>
             <select name="region">
@@ -17,11 +17,13 @@
                 <option value="Moscow region">Московская область</option>
             </select>
             <input type="submit" name="submit" placeholder="Применить"><br>
-
         </form>
     </div>
-    <div>
-        <p>{{df}}</p>
-    </div>
-
+    {% if request.method == 'POST' %}
+        {% for i in range(df_filter_len) %}
+            <div>
+                <p>Price: {{ df_filter.iloc[i]['Price'] }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
