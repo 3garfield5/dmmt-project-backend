@@ -31,22 +31,28 @@
         </form>
     </div>
     <div>
-        {% if metro == 'свиблово' %}
-            <img src="static/photo/1.jpg">
-            <img src="static/photo/2.jpg">
-            <img src="static/photo/3.jpeg">
-        {% endif %}
+        {% for met in metro_list_1 %}
+            {% if metro == met %}
+                <img src="static/photo/1.jpg">
+                <img src="static/photo/2.jpg">
+                <img src="static/photo/3.jpeg">
+            {% endif %}
+        {% endfor%}
 
-        {% if metro == 'народное ополчение' %}
-            <img src="static/photo/4.jpg">
-            <img src="static/photo/5.jpg">
-            <img src="static/photo/6.jpg">
-        {% endif %}
+        {% for met in metro_list_2 %}
+            {% if metro == met %}
+                <img src="static/photo/4.jpg">
+                <img src="static/photo/5.jpg">
+                <img src="static/photo/6.jpeg">
+            {% endif %}
+        {% endfor%}
 
-        {% if metro == 'октябрьское поле' %}
-            <img src="static/photo/7.jpg">
-            <img src="static/photo/8.jpg">
-            <img src="static/photo/9.jpg">
-        {% endif %}
+        {% for met in metro_list_3 %}
+            {% if metro == met %}
+                <img src="static/photo/7.jpg">
+                <img src="static/photo/8.jpg">
+                <img src="static/photo/9.jpeg">
+            {% endif %}
+        {% endfor%}
     </div>
 {% endblock %}

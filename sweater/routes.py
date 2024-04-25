@@ -4,7 +4,7 @@ from flask_login import login_user, login_required, logout_user
 import random
 
 
-from sweater.dw_project import metro_list
+from sweater.dw_project import metro_list_1, metro_list_2, metro_list_3, metro_list
 from sweater import db, app
 from sweater.models import Users, BotReq
 #роут на главную страницу
@@ -28,7 +28,7 @@ def index():
         return render_template('index.html')
 
     metro = random.choice(metro_list)
-    return render_template('index.html', metro=metro)
+    return render_template('index.html', metro=metro, metro_list_1=metro_list_1, metro_list_2=metro_list_2, metro_list_3=metro_list_3)
 
 #роут на страницу регистрации
 @app.route('/registration', methods=['POST','GET'])

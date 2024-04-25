@@ -1,5 +1,4 @@
 import pandas as pd
-import random
 
 df = pd.read_csv('sweater/static/data.csv')
 
@@ -19,5 +18,9 @@ metro_list = []
 
 for i in metro:
     metro_list.append(i)
+
+metro_list_1 = metro_list[:103]
+metro_list_2 = metro_list[103:206]
+metro_list_3 = metro_list[206:310]
 
 
