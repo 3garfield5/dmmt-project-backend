@@ -1,8 +1,10 @@
 from flask import redirect, render_template, request, flash, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user
+import random
 
 
+from sweater.dw_project import metro_list
 from sweater import db, app
 from sweater.models import Users, BotReq
 #роут на главную страницу
@@ -17,11 +19,16 @@ def index():
     tg = request.form.get('tg')
 
     if request.method == 'POST':
-        bot = BotReq(name=name, tg=tg)
-        db.session.add(bot)
-        db.session.commit()  # добавляем данные в бд
+        try:
+            bot = BotReq(name=name, tg=tg)
+            db.session.add(bot)
+            db.session.commit()  # добавляем данные в бд
+        except:
+            flash('Error, this nickname is zanyat')
         return render_template('index.html')
-    return render_template('index.html')
+
+    metro = random.choice(metro_list)
+    return render_template('index.html', metro=metro)
 
 #роут на страницу регистрации
 @app.route('/registration', methods=['POST','GET'])

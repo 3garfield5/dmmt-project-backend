@@ -16,11 +16,37 @@
             {% endif %}
         </nav>
     </header>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <div>
         <form method="post">
-            <input type="text" name="name" id="name" placeholder="Ваше имя"><br>
+            <input type="text" name="name" id="name" placeholder="Ваш никнейм"><br>
             <input type="text" name="tg" id="tg" placeholder="Ваш тг"><br>
             <input type="submit" value="Написать мне"><br>
         </form>
+    </div>
+    <div>
+        {% if metro == 'свиблово' %}
+            <img src="static/photo/1.jpg">
+            <img src="static/photo/2.jpg">
+            <img src="static/photo/3.jpeg">
+        {% endif %}
+
+        {% if metro == 'народное ополчение' %}
+            <img src="static/photo/4.jpg">
+            <img src="static/photo/5.jpg">
+            <img src="static/photo/6.jpg">
+        {% endif %}
+
+        {% if metro == 'октябрьское поле' %}
+            <img src="static/photo/7.jpg">
+            <img src="static/photo/8.jpg">
+            <img src="static/photo/9.jpg">
+        {% endif %}
     </div>
 {% endblock %}
