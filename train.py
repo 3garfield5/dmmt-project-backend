@@ -1,4 +1,4 @@
-from dw_project import df
+from sweater.metro import df
 from sklearn.model_selection import train_test_split
 from catboost import CatBoostRegressor, Pool
 
@@ -20,3 +20,8 @@ model.fit(train_data,
           eval_set=val_data,
           verbose=False,
           plot=True)
+
+model.save_model('house_model',
+                 format='cbm',
+                 export_parameters=None,
+                 pool=None)

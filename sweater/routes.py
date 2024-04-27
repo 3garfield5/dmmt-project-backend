@@ -3,12 +3,13 @@ from flask import redirect, render_template, request, flash, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user
 import random
+from catboost import CatBoostRegressor
 
 
-from sweater.dw_project import metro_list_1, metro_list_2, metro_list_3, metro_list, df
+from sweater.metro import metro_list_1, metro_list_2, metro_list_3, metro_list, df
 from sweater import db, app
 from sweater.models import Users, BotReq
-# from ml_model import model
+
 
 #роут на главную страницу
 @app.route('/', methods=['POST', 'GET'])
@@ -111,7 +112,7 @@ def collection():
         return render_template('collection.html', df_filter=df_filter, df_filter_len=df_filter_len)
     return render_template('collection.html')
 
-@app.route('/cost_calculation')
+@app.route('/cost_calculation', methods=['POST', 'GET'])
 def calculate():
     ap_type = request.form.get('ap_type')
     region = request.form.get('region')
@@ -124,13 +125,22 @@ def calculate():
     floor = request.form.get('floor')
     number_of_floors = request.form.get('number of floors')
     renovation = request.form.get('renovation')
-    x_calc = pd.Series({'Apartment type': ap_type, 'Metro station': metro_station,
+
+    if request.method == 'POST':
+
+        x_calc = pd.Series({'Apartment type': ap_type, 'Metro station': metro_station,
                         'Minutes to metro': minutes_to_metro, 'Region': region,
                         'Number of rooms': number_of_rooms, 'Area': area,
                         'Living area': liv_area, 'Kitchen area': kit_area,
                         'Floor': floor, 'Number of floors': number_of_floors,
                         'Renovation': renovation})
-    # prediction = model.predict(x_calc)
+
+        model = CatBoostRegressor()
+        model.load_model('sweater/house_model',
+                         format='cbm')
+        prediction = round(model.predict(x_calc))
+
+        return render_template('cost calculation.html', prediction=prediction)
 
     return render_template('cost calculation.html')
 

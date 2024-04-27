@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Cost calculation</h1>
     <div>
-        <form method="get">
+        <form method="POST">
             <select name="ap_type">
                 <option value="New building">Новое здание</option>
                 <option value="Secondary">Вторичное</option>
@@ -28,9 +28,12 @@
                 <option value="Without  renovation">Без ремонта</option>
                 <option value="Designer">Дизайнерский</option>
             </select>
-
             <input type="submit" name="submit" placeholder="Применить"><br>
         </form>
     </div>
-
+    <div>
+        {% if request.method == 'POST' %}
+            <p>Price: {{ prediction }}</p>
+        {% endif %}
+    </div>
 {% endblock %}
