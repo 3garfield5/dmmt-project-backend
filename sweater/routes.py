@@ -8,14 +8,14 @@ from catboost import CatBoostRegressor
 
 from sweater.metro import metro_list_1, metro_list_2, metro_list_3, metro_list, df
 from sweater import db, app
-from sweater.models import Users, BotReq
+from sweater.models import Users, BotReq, BagBot
 
 
 #роут на главную страницу
 @app.route('/', methods=['POST', 'GET'])
 def index():
     # try:
-    #    db.session.query(Users).delete()
+    #    db.session.query(BagBot).delete()
     #    db.session.commit()
     # except:
     #     db.session.rollback()
