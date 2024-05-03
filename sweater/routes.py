@@ -109,6 +109,17 @@ def collection():
     area_top = request.form.get('area_top')
     renovation = request.form.get('renovation')
     metro_station = request.form.get('metro_station')
+
+    # заполнение значений, если их не заполнил пользователь
+    if not price_bot:
+        price_bot = min(df['Price'])
+    if not price_top:
+        price_top = max(df['Price'])
+    if not area_bot:
+        area_bot = min(df['Area'])
+    if not area_top:
+        area_top = max(df['Area'])
+
     if request.method == 'POST':
 
         if metro_station:
