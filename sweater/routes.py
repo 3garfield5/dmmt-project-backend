@@ -104,10 +104,24 @@ def collection():
     price_bot = request.form.get('price_bot')
     price_top = request.form.get('price_top')
     region = request.form.get('region')
+    ap_type = request.form.get('ap_type')
+    area_bot = request.form.get('area_bot')
+    area_top = request.form.get('area_top')
+    renovation = request.form.get('renovation')
+    metro_station = request.form.get('metro_station')
     if request.method == 'POST':
 
-        df_filter = df.loc[(df['Price'] > float(price_bot)) & (df['Price'] < float(price_top)) & (df['Region'] == region)]
-        df_filter_len = len(df_filter)
+        if metro_station:
+            df_filter = df.loc[(df['Price'] > float(price_bot)) & (df['Price'] < float(price_top)) & (df['Region'] == region) &
+            (df['Apartment type'] == ap_type) & (df['Area'] > float(area_bot)) & (df['Area'] < float(area_top)) &
+            (df['Renovation'] == renovation) & (df['Metro station'] == metro_station.lower())]
+            df_filter_len = len(df_filter)
+
+        else:
+            df_filter = df.loc[(df['Price'] > float(price_bot)) & (df['Price'] < float(price_top)) & (df['Region'] == region) &
+            (df['Apartment type'] == ap_type) & (df['Area'] > float(area_bot)) & (df['Area'] < float(area_top)) &
+            (df['Renovation'] == renovation)]
+            df_filter_len = len(df_filter)
 
         return render_template('collection.html', df_filter=df_filter, df_filter_len=df_filter_len)
     return render_template('collection.html')

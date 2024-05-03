@@ -13,16 +13,25 @@
                 <option value="Moscow region">Московская область</option>
             </select>
             <select name="ap_type">
-                <option value="New building">Москва</option>
-                <option value="Moscow region">Московская область</option>
+                <option value="New building">Новое здание</option>
+                <option value="Secondary">Вторичное</option>
             </select>
+            <input type="number" name="area_bot" placeholder="Нижняя граница площади"><br>
+            <input type="number" name="area_top" placeholder="Верхняя граница площади"><br>
+            <select name="renovation">
+                <option value="Cosmetic">Косметический ремонт</option>
+                <option value="European-style renovation">Евроремонт</option>
+                <option value="Without renovation">Без ремонта</option>
+                <option value="Designer">Дизайнерский ремонт</option>
+            </select>
+            <input type="text" name="metro_station" placeholder="Метро (необяз. поле)"><br>
             <input type="submit" name="submit" placeholder="Применить"><br>
         </form>
     </div>
     {% if request.method == 'POST' %}
         {% for i in range(df_filter_len) %}
             <div>
-                <p>Price: {{ df_filter.iloc[i]['Price'] }}</p>
+                <p>Ap: {{ df_filter.iloc[i] }}</p>
             </div>
         {% endfor %}
     {% endif %}
