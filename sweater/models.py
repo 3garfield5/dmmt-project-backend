@@ -11,8 +11,8 @@ class Users(db.Model, UserMixin):
 
 class BotReq(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False, unique=True)
-    tg = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=True, unique=True)
+    tg = db.Column(db.String(100), nullable=True)
 
 @manager.user_loader
 def load_user(user_id):
