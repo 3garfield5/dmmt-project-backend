@@ -158,6 +158,10 @@ def calculate():
 
     return render_template('cost calculation.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.after_request
 def redirect_to_signin(response):
     if response.status_code == 401:
