@@ -42,7 +42,8 @@ def start(message):
                             db.session.add(new_req)
                             db.session.commit()
                         bot.send_message(message.chat.id, 'Спасибо, что оповестили нас о проблеме!\n'
-                                                          'Именно вы делаете нас лучше!')
+                                                          'Именно вы делаете нас лучше! \n'
+                                                          'Чтобы оставить новую заявку, напишите: /start')
                     bot.register_next_step_handler(message, table)
                 bot.register_next_step_handler(message, bag_users)
             bot.register_next_step_handler(message, tg_users)
