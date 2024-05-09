@@ -28,7 +28,6 @@ def start(message):
 
                 name = message.text
 
-
                 def bag_users(message):
                     bot.send_message(message.chat.id, 'Напишите о том, какой баг вы нашли на нашем сайте (1000 знаков)\n'
                                                       'Мои разработчики обязательно разберутся с этой проблемой\n'
