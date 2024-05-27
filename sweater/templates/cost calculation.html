@@ -1,0 +1,39 @@
+{% extends "base.html"%}
+
+{% block title %}Cost calculation{% endblock %}
+
+{% block content %}
+    <h1>Cost calculation</h1>
+    <div>
+        <form method="POST">
+            <select name="ap_type">
+                <option value="New building">Новое здание</option>
+                <option value="Secondary">Вторичное</option>
+            </select>
+            <select name="region">
+                <option value="Moscow">Москва</option>
+                <option value="Moscow region">Московская область</option>
+            </select>
+            <input type="text" name="metro station" placeholder="Станция метро"><br>
+            <input type="number" name="minutes to metro" placeholder="Минут до метро"><br>
+            <input type="number" name="number of rooms" placeholder="Количество комнат"><br>
+            <input type="number" name="area" placeholder="Площадь"><br>
+            <input type="number" name="living area" placeholder="Жилая площадь"><br>
+            <input type="number" name="kitchen area" placeholder="Кухонная площадь"><br>
+            <input type="number" name="floor" placeholder="Этаж"><br>
+            <input type="number" name="number of floors" placeholder="Количество этажей"><br>
+            <select name="renovation">
+                <option value="Cosmetic">Косметический</option>
+                <option value="European-style renovation">Евроремонт</option>
+                <option value="Without  renovation">Без ремонта</option>
+                <option value="Designer">Дизайнерский</option>
+            </select>
+            <input type="submit" name="submit" placeholder="Применить"><br>
+        </form>
+    </div>
+    <div>
+        {% if request.method == 'POST' %}
+            <p>Price: {{ prediction }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

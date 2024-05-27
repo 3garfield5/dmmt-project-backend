@@ -1,0 +1,38 @@
+{% extends "base.html"%}
+
+{% block title %}Collection{% endblock %}
+
+{% block content %}
+    <h1>Collection</h1>
+    <div>
+        <form method="POST">
+            <input type="number" name="price_bot" placeholder="Нижняя граница цены"><br>
+            <input type="number" name="price_top" placeholder="Верхняя граница цены"><br>
+            <select name="region">
+                <option value="Moscow">Москва</option>
+                <option value="Moscow region">Московская область</option>
+            </select>
+            <select name="ap_type">
+                <option value="New building">Новое здание</option>
+                <option value="Secondary">Вторичное</option>
+            </select>
+            <input type="number" name="area_bot" placeholder="Нижняя граница площади"><br>
+            <input type="number" name="area_top" placeholder="Верхняя граница площади"><br>
+            <select name="renovation">
+                <option value="Cosmetic">Косметический ремонт</option>
+                <option value="European-style renovation">Евроремонт</option>
+                <option value="Without renovation">Без ремонта</option>
+                <option value="Designer">Дизайнерский ремонт</option>
+            </select>
+            <input type="text" name="metro_station" placeholder="Метро"><br>
+            <input type="submit" name="submit" placeholder="Применить"><br>
+        </form>
+    </div>
+    {% if request.method == 'POST' %}
+        {% for i in range(df_filter_len) %}
+            <div>
+                <p>Ap: {{ df_filter.iloc[i] }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

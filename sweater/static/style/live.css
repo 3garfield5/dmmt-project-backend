@@ -1,0 +1,23 @@
+.body{
+    background-color:#172D13;
+}
+.header{
+    display: flex;
+}
+.sign_up{
+    width: Fixed (120px);
+    height: Hug (40px);
+    top: 97px;
+    left: 1495px;
+    padding: 10px, 36px, 10px, 36px;
+    border-radius: 10px;
+    gap: 10px;
+
+}
+.Logo{
+    width: 113px;
+    height: 39px;
+    top: 93px;
+    left: 306px;
+
+}
