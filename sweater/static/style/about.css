@@ -1,0 +1,167 @@
+body{
+    height: 100vh;
+    margin: 0px;
+    background-color: #F2DDC6;
+}
+.header{
+    height: 13vh;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+.menu{
+    margin-right: 5vw;
+    width: 55vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+a[class^="m_"]{
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 400;
+    text-decoration: none;
+    color: #000000;
+    position: relative;
+
+}
+a[class="m_about"]::after {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #000000;
+    transition: 0.3s;
+}
+
+
+a[class="m_about"]{
+    font-weight: 700;
+    font-size: 30px;
+}
+
+.lik{
+    min-width: 30px;
+}
+.lk{
+    background: #A7825680;
+    width: 9vh;
+    height: 9vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+a[class="m_log"]{
+    color: #321B02;
+    font-weight: 600;
+}
+a[class="m_sign"]{
+    color: #321B02;
+    background-color: #A78256;
+    box-shadow: 2px 4px 4px rgba(50, 27, 2, 0.2);
+    border-radius: 10px;
+    font-weight: 600;
+    width: 14%;
+    text-align: center;
+    padding: .7vh 0;
+}
+.cont{
+    width: 100%;
+    height: 87vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.dmmt{
+    font-family: Aclonica;
+    font-size: 65px;
+    font-weight: 400;
+    line-height: 60px;
+    letter-spacing: 0.05em;
+    text-align: center;
+    width: 15vw;
+    height: auto;
+
+}
+
+.up{
+    display: flex;
+
+}
+.max{
+    display: flex;
+}
+
+.matv{
+    display: flex;
+    margin-top: 4.2vh;
+}
+
+.down{
+    display: flex;
+}
+
+.dany{
+    display: flex;
+}
+
+.frie{
+    padding-top: 18%;
+}
+
+.bot{
+    display: flex;
+    justify-content: center;
+    width: 19vh;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.timoha{
+    display: flex;
+}
+
+.tim{
+    padding-top: 10%;
+}
+
+.pusto{
+    width: 10;
+    margin-left: 0.5vw;
+    width: 1vw;
+}
+
+
+.silk{
+    color: #000000;
+    text-decoration: none;
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 43.88px;
+    letter-spacing: 0.05em;
+    text-align: left;
+
+}
+
+.rol{
+    color: #000000;
+    color: rgba(0, 0, 0, 0.6);
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29.26px;
+    letter-spacing: 0.05em;
+    text-align: left;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
