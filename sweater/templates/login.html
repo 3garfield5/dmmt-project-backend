@@ -1,25 +1,49 @@
-{% extends "base.html"%}
 
-{% block title %}Log in{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="static/style/login.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Montserrat&display=swap" rel="stylesheet">
+<title>Вход в личный кабинет</title>
+</head>
 
-{% block content %}
-    <h1>Login</h1>
-    <div>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class = flashes>
-                    {% for messages in messages %}
-                        <li>{{ messages }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-
-        <form method="post">
-            <input type="email" name="email" id="email" placeholder="Введите почту"><br>
-            <input type="password" name="password" id="password" placeholder="Введите пароль"><br>
-            <input type="submit" value="Войти"><br>
-            <text>Are you not in system? </text> <a href="{{ url_for('registration') }}">Register</a>
-        </form>
+<body>
+    <div class="work_wnd">
+        <div class="cont">
+            <div class="logo">
+                <a href="/" class="hu"><label class="logo_l">DMMT</label></a>
+            </div>
+            <div class="heder">
+                <label class="heder_l">Sign in</label>
+            </div>    
+            <form method="post">
+                
+                <div class="data">
+                    <div class="info">
+                        <label class="info_l">Sign into your account</label>
+                    </div>
+                    <input type="email" name="email" id="email" placeholder="Email" required>
+                    <div class="password">
+                        <input type="password" name="password" id="pasw" placeholder="Password" required>
+                        <a href="/registration" class="pas_cont" onclick="Show()"><svg width="42" height="25" viewBox="0 0 42 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 7.76a8.333 8.333 0 1 1 0 16.667A8.333 8.333 0 0 1 21 7.76m0 3.125a5.208 5.208 0 1 0 0 10.417 5.208 5.208 0 0 0 0-10.417M21 .458c9.612 0 17.91 6.563 20.211 15.76a1.563 1.563 0 0 1-3.031.758C36.224 9.163 29.17 3.584 21 3.584c-8.172 0-15.228 5.583-17.181 13.402a1.563 1.563 0 0 1-3.032-.757C3.085 7.027 11.385.459 21.001.459" fill="#79480E"/></svg></a>
+                    </div><br>
+                    <div class="For"><a href="/registration" class="forgot">Forgot password?</a></div>
+                </div>
+                <div class="sig">
+                    <div class="sub">
+                        <input type="submit" class="but" value="Sign in">
+                    </div>
+                    <br><label class="or"></label><br>
+                </div>
+            </form>
+        </div>
     </div>
-{% endblock %}
+    <div class="imng">
+        <img src="{{ imgs }}"  height="100%">
+    </div>
+<script src="static/js/login.js"></script>
+</body>
+</html>

@@ -20,6 +20,11 @@ class BagBot(db.Model):
     tg = db.Column(db.String(100), nullable=True, unique=True)
     bag = db.Column(db.String(1000), nullable=True)
 
+class Favorites(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=True, unique=False)
+    product_id = db.Column(db.Integer, nullable=True, unique=False)
+
 @manager.user_loader
 def load_user(user_id):
     return Users.query.get(user_id)

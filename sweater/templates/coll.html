@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="static/style/coll.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Montserrat&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="header">
+        <div class="log">
+            <label class="lig">DMMT</label>
+        </div>
+        <div class="menu">
+            <a href="/" class="m_home">Home</a>
+            <a href="/collection" class="m_coll">Collection</a>
+            <a href="/cost_calculation" class="m_cost">Cost calculation</a>
+            <a href="/about" class="m_about">About</a>
+            <a href="/fav" class="lik"><svg  height="30%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M12 6c-1.8-2.097-4.806-2.745-7.06-.825-2.255 1.92-2.573 5.131-.802 7.402 1.472 1.888 5.927 5.87 7.387 7.16.163.144.245.216.34.245a.46.46 0 0 0 .258 0c.095-.029.176-.1.34-.245 1.46-1.29 5.915-5.272 7.387-7.16 1.77-2.27 1.492-5.502-.802-7.402S13.8 3.903 12 6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            {% if current_user.is_authenticated %}
+                <dev class="lk"><a href="/per_acc">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="5vh" height="5vh" viewBox="0 0 512 512"><path d="M232.6 17.6c-16 2.9-34.2 10.4-49.1 20.2-9.1 6-27.8 24.8-33.7 33.7C134.7 94.4 128 116.9 128 144c0 27.2 6.8 49.7 21.8 72.5 6 9 24.7 27.7 33.7 33.7 22.8 15 45.3 21.8 72.5 21.8s49.7-6.8 72.3-21.7c9.3-6.1 27.9-24.7 34-34 14.9-22.6 21.7-45.1 21.7-72.3 0-27.1-6.8-49.7-21.7-72.4-6.1-9.2-24.8-27.9-34-33.9-15.5-10.2-32.7-17.2-50-20.2-10.8-1.9-35-1.8-45.7.1m39.8 32.5c34.7 5.6 64.4 32.3 75.3 67.6 2.5 8.1 2.7 10.1 2.7 26.3s-.2 18.2-2.7 26.3c-7.8 25.2-24.2 45.4-47 57.7-14.4 7.8-28.3 11.1-45.7 11.1-41.5-.1-78.6-28.2-90.5-68.6-5-16.8-4.6-40.1 1.1-56.7 15.2-44.7 59.6-71.2 106.8-63.7M163 293.3c-49.4 24.8-86.2 66.6-103.9 118.2-7.3 21.1-11.1 42.1-11.1 62 0 13.5 1.2 16.8 7.2 20.5 3.3 2 5.5 2 200.8 2s197.5 0 200.8-2c5.9-3.6 7.2-7.1 7.2-19.5 0-61.5-32.3-124.2-83.8-162.2-17.3-12.8-41.3-25.3-48.8-25.3-2.6 0-8 1.5-14 3.9C296 299.5 278.1 303 256 303s-40-3.5-61.4-12.1c-13.9-5.5-16.1-5.4-31.6 2.4m26 31.3c8.5 3.4 27.2 8.1 40 9.9 5.9.8 17.7 1.5 27 1.5 24.3 0 43-3.1 64.9-10.7l10.4-3.6 5.6 2.8c8.6 4.1 26.7 16.6 35.5 24.3 21.5 19.1 39.6 46 49 72.9 3.4 10 7.9 28.5 9 37.5l.6 4.8H81l.6-4.3c5.8-43.3 26.8-83.3 58-110.8 12.6-11.1 36.9-26.8 41.5-26.9.8 0 4.4 1.2 7.9 2.6"/></svg></a>
+                </dev>
+            {% else %}
+                <a href="/login" class="m_log"> Log in</a>
+                <a href="/registration" class="m_sign">Sign up</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="co">
+        <div class="filt">
+            <label id="psev_hed">Фильтры для подбора<br>подходящих квартир</label>
+            <form method="POST">
+                <div class="bild">
+                    <label class="reg" >Тип квартир:</label>
+                    <select name="ap_type" class="sel">
+                        <option value="New building">Новое здание</option>
+                        <option value="Secondary">Вторичное</option>
+                </select>
+                </div>
+                <div class="mestop">
+                    <label class="reg" >Местоположение:</label>
+                    <select name="region">
+                        <option value="Moscow">Москва</option>
+                        <option value="Moscow region">Московская область</option>
+                    </select>
+                </div>
+                <div class="remo">
+                    <label class="reg" >Ремонт:</label>
+                    <select name="renovation">
+                        <option value="Cosmetic">Косметический ремонт</option>
+                        <option value="European-style renovation">Евроремонт</option>
+                        <option value="Without renovation">Без ремонта</option>
+                        <option value="Designer">Дизайнерский ремонт</option>
+                    </select>
+                </div>
+                <div class="metr">
+                    <label class="reg" >Станция Метро:</label>
+                    <input type="text" name="metro_station" placeholder="Народное ополчение " id="i-m"><br>
+                </div>
+                <div class="price reg">
+                    <label >Стоимость, руб:</label>
+                    <div class="polz">
+                        <input type="number" name="price_bot" placeholder="от">
+                        <input type="number" name="price_top" placeholder="до">    
+                    </div>
+                </div>
+                <div class="sqrt reg">
+                    <label >Площадь, м²:</label>
+                    <div class="polz">
+                        <input type="number" name="area_bot" placeholder="мин">
+                        <input type="number" name="area_top" placeholder="макс">
+                    </div>
+                </div>
+                <input class="out" type="submit" name="submit" value="Применить" id="subi">
+                <div class="calc">
+                    <a href="/cost_calculation" id="calk"><svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32.5 5.406c1.122 0 2.031.91 2.031 2.031v3.395h5.417a4.74 4.74 0 0 1 4.74 4.74V29.79h6.093a4.74 4.74 0 0 1 4.74 4.74v20.312a4.74 4.74 0 0 1-4.74 4.74H14.22a4.74 4.74 0 0 1-4.74-4.74v-22.83a4.74 4.74 0 0 1 2.329-4.08l8.505-5.026v-7.335a4.74 4.74 0 0 1 4.74-4.74h5.416V7.438c0-1.122.91-2.031 2.031-2.031m-8.125 16.309c2.193.325 4.063 2.184 4.063 4.696V55.52h8.125V34.53a4.74 4.74 0 0 1 4.062-4.691V15.57a.677.677 0 0 0-.677-.677H25.052a.677.677 0 0 0-.677.677zm16.927 12.138a.677.677 0 0 0-.677.677v20.99h10.156a.677.677 0 0 0 .677-.678V34.53a.677.677 0 0 0-.677-.678zm-17.948-8.025-9.48 5.602a.68.68 0 0 0-.332.582v22.83c0 .374.303.677.677.677h10.156V26.411c0-.524-.57-.85-1.021-.583" fill="#000" fill-opacity=".4"/></svg>
+                        Рассчитать стоимость<br> по всем параметрам </a>
+
+                </div>
+            </form>
+        </div>
+        <div class="kont">
+            <div class="nub">
+                <label class="chislo"><label class="ch_tx" >Квартир найдено {{ df_filter_len }} </label></label>
+            </div>
+            <div class="spis">
+                {% if request.method == 'POST' %}
+                    {% for i in range(df_filter_len) %}
+                        <form method="post" target="myIFR">
+                            <div class="card">
+                                <div class="nad_kar">
+                                    <div class="plo_typ">
+                                        <label class="harak" >Площадь -</label><label>{{ df_filter['Area'].iloc[i] }}</label><br>
+                                        <label class="harak">Тип квартиры -</label><label>{{ df_filter['Apartment type'].iloc[i] }}</label>
+                                    </div>
+                                    <div class="izb">
+                                        <button id="but" onclick="tram({{ df_filter.index[i] }})" type="submit" name="2" value="{{ df_filter.index[i] }}" class="b_i"><svg id="{{ df_filter.index[i] }}" width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36.86 56.21 21.463 38.24a9.23 9.23 0 0 1-.137-11.845c3.422-4.186 9.693-4.546 13.572-.78L38 28.624l3.1-3.01c3.88-3.766 10.152-3.405 13.574.78a9.23 9.23 0 0 1-.138 11.847L39.14 56.21a1.5 1.5 0 0 1-2.279 0M75.5 38c0 20.71-16.79 37.5-37.5 37.5S.5 58.71.5 38 17.29.5 38 .5 75.5 17.29 75.5 38m-5.625 0C69.875 20.396 55.604 6.125 38 6.125S6.125 20.395 6.125 38c0 17.604 14.27 31.875 31.875 31.875 17.604 0 31.875-14.271 31.875-31.875" fill="#212121"/></svg><svg id="l {{ df_filter.index[i] }}" class="bnotu" width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 75.5c20.71 0 37.5-16.79 37.5-37.5S58.71.5 38 .5.5 17.29.5 38 17.29 75.5 38 75.5m-1.14-19.291-15.397-17.97a9.23 9.23 0 0 1-.137-11.845c3.421-4.186 9.693-4.547 13.572-.78l3.101 3.01 3.101-3.01c3.88-3.767 10.152-3.406 13.574.78a9.23 9.23 0 0 1-.138 11.847L39.138 56.209a1.5 1.5 0 0 1-2.278 0" fill="#212121"/></svg></button>
+                                    </div>
+                                    <iframe name="myIFR" style="display: none"></iframe>
+                                </div>
+                                <img src="{{ imgs[imgs_out[i]] }}" class="photo">
+                                <div class="pod_kar">
+                                    <label class="harak">Местоположение -<label></label>{{ df_filter['Region'].iloc[i] }}</label><br>
+                                    <label class="harak">Ремонт -<label></label>{{ df_filter['Renovation'].iloc[i] }}</label><br>
+                                    <label class="harak">Метро -<label>{{ df_filter['Metro station'].iloc[i] }}</label></label>
+                                </div>
+                                <label class="harak cena">Цена квартиры: {{ df_filter['Price'].iloc[i] }} </label>
+                            </div>
+                        </form>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+        
+<script src="static/js/coll.js"></script>
+</body>
+</html>
